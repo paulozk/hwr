@@ -72,7 +72,7 @@ def segment_line_strips(boxes, box_centroids, parchment, avg_height, avg_width):
                 line.append(1)
                 word_lines.append(line)
 
-    for line in word_lines:
+    for line in word_lines[0:-1]:
         if line[1] < line_count_threshold:
             line[0] = -100
 
