@@ -1,0 +1,4 @@
+tensorflow version 1.8.0
+keras version 2.2.0
+opencv version 3.4.0
+numpy version 1.14.4
