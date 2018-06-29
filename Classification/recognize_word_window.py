@@ -73,16 +73,14 @@ def water_drop(component, avg_width, plot):
     
     # classify the separated characters
     for ch in good_images:
-        print(ch.shape)
-        plt.figure(figsize = (500,4))
-        plt.imshow(ch, cmap='gray', aspect = 1)
-        plt.show()
+        if(plot):
+            plt.figure(figsize = (500,4))
+            plt.imshow(ch, cmap='gray', aspect = 1)
+            plt.show()
         top_chars, top_scores = recognize_character(ch)
         best_score = max(top_scores)
         best_idx = top_scores.index(best_score)
         best_char = top_chars[best_idx].split()[0]
-        print("Best score:", best_score)
-        print("Best character:", best_char) 
         good_chars.append(best_char)
         confidences.append(best_score)
         
@@ -130,10 +128,11 @@ def recognize_word(word, avg_width, plot):
         # characters' height or width should be high enough 
         if(stat[2] > (0.4 * avg_width) or (stat[3] > (0.5 * word.shape[0]))):  
             ch = word[stat[1]: stat[1]+ word.shape[0], stat[0]: stat[0]+stat[2]]
-            print("Component:")
-            plt.figure(figsize = (500,4))
-            plt.imshow(ch, cmap='gray', aspect = 1)
-            plt.show()
+         
+            if(plot):
+                plt.figure(figsize = (500,4))
+                plt.imshow(ch, cmap='gray', aspect = 1)
+                plt.show()
             
             # components that are too big need to be processed further, as they probably consist
             # of multiple characters;
@@ -156,13 +155,12 @@ def recognize_word(word, avg_width, plot):
                 best_score = max(top_scores)
                 best_idx = top_scores.index(best_score)
                 best_char = top_chars[best_idx].split()[0]
-                print("Best score:", best_score)
-                print("Best character:", best_char)
+           
                 sequence.append(best_char)
                 confidences.append(best_score)    
                 
     #chars, sequence, confidences = slide_window(word, avg_width, plot)
-    print("Predicted sequence:", sequence, confidences)
+    #print("Predicted sequence:", sequence, confidences)
     return chars, sequence, confidences
    
 

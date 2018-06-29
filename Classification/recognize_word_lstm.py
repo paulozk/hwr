@@ -10,10 +10,9 @@ import matplotlib.pyplot as plt
 def get_predictions(model, image, n_chars):
      # use the lstm for prediction
     output = model.predict(image)
-    #print("Output:",output)
     output_sorted = np.sort(output)
     #output_sorted = output_sorted[0]
-    #print("sorted output:", output_sorted)
+ 
     
     output_trimmed = output_sorted[:, 27 - n_chars:]
     
@@ -35,7 +34,7 @@ def get_predictions(model, image, n_chars):
   
     
     
-    print("Idx:", output_labels)
+
     for idx in output_labels:
         final_output.append(labels[idx])
  
@@ -114,10 +113,6 @@ def classify(word_preds, word_probs, char_preds, char_probs, cnn_sequence, cnn_c
         
     }
    
-    print("Word preds:", word_preds)
-    print("Word probs:", word_probs)
-    print("ch preds:", char_preds)
-    print("ch probs:", char_probs)
     
     n_chars = len(word_probs)
     
@@ -175,9 +170,6 @@ def classify(word_preds, word_probs, char_preds, char_probs, cnn_sequence, cnn_c
         # position in sequence still empty?
         if(p not in final_output.keys()):
             # fill the position with the CNN prediction or word prediction, depending on which is higher, unless character is not allowed there (conf == 0).
-            print("Empty position:", p)
-            print("LSTM: ",  char_preds[p] , char_probs[p])
-            print("CNN: ",  cnn_sequence[p] , cnn_confidences[p])
             if(cnn_confidences[p] != 0 or char_probs[p] != 0):
                 if(char_probs[p] > cnn_confidences[p]):
                     final_output[p] = char_preds[p]
@@ -207,9 +199,7 @@ def classify(word_preds, word_probs, char_preds, char_probs, cnn_sequence, cnn_c
     # use the dictionary to build the sequence
     for pos in final_output.keys():
         final_sequence[pos] = final_output[pos]
-                            
-    print("Final output:", final_sequence)
-    
+                                
     return final_sequence
                     
                 
@@ -224,7 +214,6 @@ def recognize_word_lstm(word, chars, cnn_sequence, cnn_confidences, model, avg_w
 
     n_chars = len(chars)
     
-    print("N chars:", n_chars)
     
     if(n_chars > 0):
     
@@ -232,7 +221,6 @@ def recognize_word_lstm(word, chars, cnn_sequence, cnn_confidences, model, avg_w
 
         # invert the colors
         word = 255 - word
-        print("orig shape:",word.shape)
 
         _,word = cv2.threshold(word,127,255,cv2.THRESH_BINARY)
 
@@ -263,8 +251,6 @@ def recognize_word_lstm(word, chars, cnn_sequence, cnn_confidences, model, avg_w
         char_preds = []
         char_probs = []
         for ch in chars:
-            plt.imshow(ch, cmap='gray', aspect = 1)
-            plt.show()
             ch = cv2.resize(ch, (32, 32))
             ch = ch / 255
             ch = np.reshape(ch, (1,32,32))

@@ -6,7 +6,6 @@ from Classification.CNN.classify import *
 
 # find the most likely character by template matching
 def recognize_character(char):
-    print("Recognizing the following character:")
     #kernel = np.ones((3,3),np.uint8)
     #char = cv2.erode(char, kernel, iterations = 1)
     user_defined_threshold = 0.08
